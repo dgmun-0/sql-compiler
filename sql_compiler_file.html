@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>SQL Compiler</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/sql.js/1.6.2/sql-wasm.js"></script>
+</head>
+<body>
+    <textarea id="sqlInput" placeholder="Enter SQL query here..."></textarea>
+    <button onclick="runSQL()">Execute SQL</button>
+    <pre id="output"></pre>
+
+    <script>
+        var db;
+        // Load the sql-wasm.wasm file
+        initSqlJs().then(function (SQL) {
+            // Create a database
+            db = new SQL.Database();
+        });
+
+        function runSQL() {
+            var sql = document.getElementById("sqlInput").value;
+            try {
+                var contents = db.exec(sql);
+                // Show the results
+                document.getElementById("output").textContent = JSON.stringify(contents, null, 4);
+            } catch (e) {
+                document.getElementById("output").textContent = "Error: " + e.message;
+            }
+        }
+    </script>
+</body>
+</html>
